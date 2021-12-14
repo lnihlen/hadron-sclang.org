@@ -1,0 +1,7 @@
+---
+header:
+  - name: GitHub
+    ref: https://github.com/hadron-sclang/hadron
+    icon: gdoc_github
+    external: true
+
