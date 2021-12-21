@@ -9,5 +9,5 @@ early development stage and is not ready for use, but will hopefully one day be 
 
 As Hadron nears production this website is intended to serve as a documentation source for any documentation and news
 regarding Hadron specifically. But for now this site will host a few research reports and articles about
-the exising SuperCollider language implementation and SC development in general. 
+the exising SuperCollider language implementation and SC development in general.
 
