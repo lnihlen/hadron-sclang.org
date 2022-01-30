@@ -41,11 +41,9 @@ and potential harm of any change they would like to make.
 
 ## Unclear Authority
 
-A few years ago, James McCartney, the original author of SuperCollider, resigned from the project, followed later
-by the resignation of the most senior remaining developer. It's now less clear who the deciding authority is on any
-nontrivial technical decision. Furthermore, as the Class Library has grown in size, fewer people have the requisite
-knowledge to make informed decisions about cross-cutting changes or complex areas of the code base like `Server` or the
-contents of `JITLib`.
+As the Class Library has grown in size, fewer people have the requisite knowledge to make informed decisions about
+cross-cutting changes or complex areas of the code base like `Server` or the contents of `JITLib`. This uncertainty
+slows developer velocity.
 
 There is an [RFC process](https://github.com/supercollider/rfcs#what-does-an-rfc-do) for formal proposals for changes to
 SuperCollider. Democratic decision-making processes trade speed for fairness and inclusiveness, and sometimes reaching a
