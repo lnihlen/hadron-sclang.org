@@ -167,27 +167,6 @@ n.a.postln;     // 1
 )
 {{< /highlight >}}
 
-### Ephemeral And Persistent Values
-
-CPUs manipulate values in registers, and registers are the fastest form of storage they access, so Hadron always assigns
-values to register locations. Local variable lifetimes are limited to their lexical scope, so they exist only in
-registers. Member variables are tied to object lifetimes, so we allocate these from the heap. Local variables can be
-*captured* by heap-allocated functions. Hadron must identify all persistent values during compilation and guarantee that
-they are copied back out to their heap locations on any possible path out of the method.
-
-Hadron accesses all persistent values via heap pointers with offsets known at compile-time:
-
-| Type                              | Initial Value             | Save                                 |
-|-----------------------------------|---------------------------|--------------------------------------|
-| Local Variable                    | Constant                  | Never                                |
-| Arguments                         | Load from stack           | Never                                |
-| Captured Local Value (outside)    | Constant                  | Save to new Array                    |
-| Captured Local Value (inside)     | Load from context array   | Save to context Array                |
-| Instance Vars                     | Load from this pointer    | Save to this pointer                 |
-| Class Vars                        | Load from class var table | Save to class var table              |
-
-The Legacy SuperCollider interpreter keeps the entire stack frame from a captured lexical scope, including arguments, and arguments behave exactly like local variables for lexical scoping.
-
 ### Imported Names
 
 Once Hadron determines the origin of the named value, it adds the appropriate import HIR statement to the first block
@@ -244,9 +223,23 @@ sp.t.postln;           // 4
 )
 {{< /highlight >}}
 
-Outside of assignment causing a compilation error, these variable names are all matched at the lowest priority, meaning
-that even a constant with the same name will shadow the matching keyword variable. However, `this` is a notable
-exception to these precedence rules. The interpreter silently supplies `this` as the first argument to every
-SuperCollider method, so it has argument precedence in name searches. Like any other argument name, it shadows any
-instance variables, class variables, or constants with the same name, and declaring an argument or local variable named
-`this` is a compilation error.
+Outside of assignment causing a compilation error, these variable names are all matched at the lowest priority, so even
+a constant with the same name will shadow the matching keyword variable. However, `this` is a notable exception to these
+precedence rules. The interpreter silently supplies `this` as the first argument to every SuperCollider method, so it
+has argument precedence in name searches. Like any other argument name, it shadows any instance variables, class
+variables, or constants with the same name, and declaring an argument or local variable named `this` is a compilation
+error.
+
+## Ephemeral And Persistent Values
+
+The legacy SuperCollider interpreter keeps intermediate values during computation on a per-thread *compute stack*. Local
+variables and arguments live in a per-call `Frame` array, instance variables in an `Array` pointed to by `this`, and
+class variables in a global array kept in `thisProcess`.
+
+CPUs manipulate values in registers, and registers are the fastest storage they can access. Hadron trys to keep
+intermediate values in registers, only saving values out to memory on specific assignment statements specified in the
+input code. This guarantees program correctness, but can result in unecessary reads and writes to memory in saving and
+reloading unchanged values. There are several opportunities here for future optimizations, but like all optimizations
+this work will require good test coverage ensuring language correctness, as lazy writing can create lots of subtle
+consistency bugs that can be hard to diagnose and repair.
+
