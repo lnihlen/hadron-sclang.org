@@ -168,6 +168,10 @@ expr1   :  '(' exprseq ')'
 
 ## 2.5 Literals
 
+Literals are notations for constant values of some built-in types. SuperCollider documentation has good coverage of
+literals [here](https://doc.sccode.org/Reference/Literals.html). I will not repeat that documentation but specify
+additional details here.
+
 ## 2.6 Operators
 
 ## 2.7 Delimiters

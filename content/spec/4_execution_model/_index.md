@@ -40,3 +40,5 @@ f.value(bazz: 1, bazz: 2, bazz: 3);        // foo: 1, bar: 2, bazz: 3
 f.value(bork: 99);                         // foo: 1, bar: 2, bazz: nil
 )
 ```
+
+## 4.2 Exceptions
